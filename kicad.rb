@@ -38,12 +38,12 @@ class Kicad < Formula
     
     # Newest problem: The system's own boost may not be being compiled with libc++11. Fixed by patch?
     
-# Standard CMAKE args for reference. Remove before release.
-#      "-DCMAKE_FIND_FRAMEWORK=LAST",
-#      "-DCMAKE_INSTALL_PREFIX=/usr/local/Cellar/kicad/HEAD",
-#      "-DCMAKE_BUILD_TYPE=NONE",
-#      "-DCMAKE_VERBOSE_MAKEFILE=ON",
-#      "-Wno-dev"
+	# Standard CMAKE args for reference. Remove before release.
+	#      "-DCMAKE_FIND_FRAMEWORK=LAST",
+	#      "-DCMAKE_INSTALL_PREFIX=/usr/local/Cellar/kicad/HEAD",
+	#      "-DCMAKE_BUILD_TYPE=NONE",
+	#      "-DCMAKE_VERBOSE_MAKEFILE=ON",
+	#      "-Wno-dev"
 
 
     # The OSX_DEPLOYMENT_TARGET flag is necessary, as clang needs the c++11 library specified,
@@ -54,8 +54,8 @@ class Kicad < Formula
     args << "-DCMAKE_CXX_COMPILER=clang++"
     args << "-DCMAKE_CXX_FLAGS='-stdlib=libc++ -std=c++11 -Wno-c++11-narrowing'"
     
-    ohai *args # Temporary.
-    ohai *std_cmake_args # Temporary.
+    ohai "Args array.", *args # Temporary.
+    ohai "Standard cmake args.", *std_cmake_args # Temporary.
     
     system "cmake", ".", *args # Removed: *std_cmake_args, "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.7"
 
@@ -63,13 +63,7 @@ class Kicad < Formula
   end
   
   def caveats
-  	s = <<-EOS.undent
-  		A formula to build the Kicad EDA software suite.
-  	
-  		This formula straight-up does not work on OSX systems before Lion. This is not necessarily
-  		because they couldn't work, it's because the required c++11 library isn't supported by
-  		Apple's clang compiler for targets running older OSX versions.
-  	EOS
+  	s = "A formula to build the Kicad EDA software suite.\n\nThis formula straight-up does not work on OSX systems before Lion. This is not necessarily because they couldn't work, it's because the required c++11 library isn't supported by Apple's clang compiler for targets running older OSX versions."
   end
 
 end
@@ -90,3 +84,4 @@ index 4a00403..ea3162d 100644
      set( BOOST_TOOLSET   "toolset=darwin" )
  
      if( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
+
