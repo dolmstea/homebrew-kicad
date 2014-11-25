@@ -2,7 +2,9 @@ require "formula"
 
  # This is a formula for installing the Kicad EDA software suite. As Kicad is tricky, and
  # Apple refuses to make it easier, this formula is a bit unstable.
-
+ 
+ # dolmstea 2014
+ 
 class Kicad < Formula
   homepage "http://kicad-pcb.org"
 
@@ -23,6 +25,10 @@ class Kicad < Formula
   ###########
   # Patches #
   ###########
+  #
+  # Now that there are so many, might be worth writing diff files for each patch and putting them
+  # in the repository. Will wait until this Formula builds properly to do that.
+  #
   # 1. This is a patch to fix the internal boost building stupidity. It forces the use of the
   # c++11 libraries when compiling boost and sets the minimum OSX version to 10.7 so that
   # clang and llvm don't have a fit.
@@ -66,7 +72,35 @@ class Kicad < Formula
     
     system "cmake", ".", *args
 
-    system "make", "install"
+    system "make"
+    
+    # Copy wx files pre-emptively to avoid permissions conflicts. This obviously needs to
+    # be rehashed to be version-independent.
+    #system "cp -rp /usr/local/Cellar/wxmac/3.0.2/lib/libwx_baseu-3.0.0.2.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/Cellar/wxmac/3.0.2/lib/libwx_osx_cocoau_adv-3.0.0.2.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/Cellar/wxmac/3.0.2/lib/libwx_osx_cocoau_core-3.0.0.2.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/lib/libwx_baseu-3.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/lib/libwx_baseu_net-3.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/lib/libwx_baseu_xml-3.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/lib/libwx_osx_cocoau_adv-3.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/lib/libwx_osx_cocoau_aui-3.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/lib/libwx_osx_cocoau_core-3.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/lib/libwx_osx_cocoau_gl-3.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+    #system "cp -rp /usr/local/lib/libwx_osx_cocoau_html-3.0.dylib /usr/local/Cellar/kicad/cvpcb.app/Contents/Frameworks"
+     
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/Cellar/wxmac/3.0.2/lib/libwx_baseu-3.0.0.2.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/Cellar/wxmac/3.0.2/lib/libwx_osx_cocoau_adv-3.0.0.2.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/Cellar/wxmac/3.0.2/lib/libwx_osx_cocoau_core-3.0.0.2.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/lib/libwx_baseu-3.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/lib/libwx_baseu_net-3.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/lib/libwx_baseu_xml-3.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/lib/libwx_osx_cocoau_adv-3.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/lib/libwx_osx_cocoau_aui-3.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/lib/libwx_osx_cocoau_core-3.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/lib/libwx_osx_cocoau_gl-3.0.dylib"
+    (prefix/"cvpcb.app/Contents/Frameworks").install "/usr/local/lib/libwx_osx_cocoau_html-3.0.dylib"
+    
+    system "make install"
   end
   
   def caveats
@@ -133,3 +167,4 @@ index eef8172..8a67b7a 100644
              {
                  SCH_NO_CONNECT*  no_connect = AddNoConnect( aDC, gridPosition );
                  SetRepeatItem( no_connect );
+
